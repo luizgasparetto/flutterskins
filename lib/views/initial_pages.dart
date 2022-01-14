@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lojavirtual/widgets/custom_drawer.dart';
 
 import 'home_page.dart';
-import 'products_page.dart';
+import 'categories_page.dart';
 
 class ViewPage extends StatelessWidget {
   ViewPage({Key? key}) : super(key: key);
@@ -22,8 +22,10 @@ class ViewPage extends StatelessWidget {
           ),
         ),
         Scaffold(
+          backgroundColor: const Color.fromRGBO(23, 22, 31, 1),
           appBar: AppBar(
-            title: const Text('Products'),
+            backgroundColor: const Color.fromRGBO(23, 22, 31, 1),
+            title: const Text('Categories'),
             centerTitle: true,
             elevation: 0,
           ),
