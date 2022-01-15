@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:lojavirtual/data/ProductData.dart';
-import 'package:lojavirtual/tiles/product_tile.dart';
+import 'package:lojavirtual/views/cart_screen.dart';
+import 'package:lojavirtual/widgets/tiles/product_tile.dart';
 
 class ProductsPage extends StatelessWidget {
   final DocumentSnapshot snapshot;
@@ -18,9 +19,16 @@ class ProductsPage extends StatelessWidget {
           backgroundColor: Colors.transparent,
           title: Text(snapshot['title']),
           centerTitle: true,
-          bottom: const TabBar(
-            indicatorColor: Color.fromRGBO(130, 87, 229, 1),
-            tabs: [
+          actions: [
+            IconButton(
+              onPressed: () => Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const CartScreen())),
+              icon: const Icon(Icons.shopping_cart),
+            ),
+          ],
+          bottom: TabBar(
+            indicatorColor: Theme.of(context).primaryColor,
+            tabs: const [
               Tab(
                 icon: Icon(Icons.grid_on),
               ),
@@ -38,9 +46,9 @@ class ProductsPage extends StatelessWidget {
               .get(),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
-              return const Center(
+              return Center(
                 child: CircularProgressIndicator(
-                  color: Color.fromRGBO(130, 87, 229, 1),
+                  color: Theme.of(context).primaryColor,
                 ),
               );
             }
@@ -59,11 +67,14 @@ class ProductsPage extends StatelessWidget {
                     ),
                     itemCount: snapshot.data!.docs.length,
                     itemBuilder: (context, index) {
+                      ProductData data = ProductData.fromDocument(
+                        snapshot.data!.docs[index],
+                      );
+                      data.category = this.snapshot.id;
+
                       return ProductTile(
                         type: "grid",
-                        product: ProductData.fromDocument(
-                          snapshot.data!.docs[index],
-                        ),
+                        product: data,
                       );
                     },
                   ),
@@ -71,11 +82,14 @@ class ProductsPage extends StatelessWidget {
                     padding: const EdgeInsets.all(4),
                     itemCount: snapshot.data!.docs.length,
                     itemBuilder: (context, index) {
+                      ProductData data = ProductData.fromDocument(
+                        snapshot.data!.docs[index],
+                      );
+                      data.category = this.snapshot.id;
+
                       return ProductTile(
                         type: "list",
-                        product: ProductData.fromDocument(
-                          snapshot.data!.docs[index],
-                        ),
+                        product: data,
                       );
                     },
                   )

@@ -8,6 +8,8 @@ class ProductData {
   late List images;
   late String status;
   late double float;
+  late List tags;
+  late String type;
 
   ProductData.fromDocument(DocumentSnapshot snapshot) {
     id = snapshot.id;
@@ -16,5 +18,16 @@ class ProductData {
     images = snapshot['images'];
     status = snapshot['status'];
     float = snapshot['float'] + 0.0;
+    tags = snapshot['tags'];
+    type = snapshot['type'];
+  }
+
+  Map<String, dynamic> toResumedMap() {
+    return {
+      'title': title,
+      'float': float,
+      'status': status,
+      'price': price,
+    };
   }
 }

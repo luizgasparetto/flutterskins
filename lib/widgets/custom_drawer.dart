@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:lojavirtual/tiles/background_gradient.dart';
+import 'package:lojavirtual/controllers/user_controller.dart';
+import 'package:lojavirtual/database/auth/auth_service.dart';
 import 'package:lojavirtual/widgets/text.dart';
-
-import '../tiles/drawer_tile.dart';
+import 'package:lojavirtual/widgets/tiles/background_gradient.dart';
+import 'package:lojavirtual/widgets/tiles/drawer_tile.dart';
+// ignore: implementation_imports
+import 'package:provider/src/provider.dart';
 
 class CustomDrawer extends StatelessWidget {
   final PageController pageController;
@@ -13,6 +16,9 @@ class CustomDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final userAuth = context.watch<AuthService>();
+    final user = context.read<UserController>();
+
     return Container(
       color: const Color.fromRGBO(23, 22, 31, 1),
       padding: const EdgeInsets.only(top: 129),
@@ -33,28 +39,47 @@ class CustomDrawer extends StatelessWidget {
                   child: Stack(
                     children: <Widget>[
                       Positioned(
-                        top: 16,
+                        top: 12,
                         left: 0,
                         child: buildTitle("Flutter's\nSkins", size: 34),
                       ),
                       Positioned(
                         left: 0,
-                        bottom: 10,
+                        bottom: 0,
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            buildTitle('Olá,', size: 18),
-                            const SizedBox(height: 3),
-                            GestureDetector(
-                              child: Text(
-                                'Entre ou cadastre-se',
-                                style: GoogleFonts.montserrat(
-                                  fontSize: 16,
-                                  color: Theme.of(context).primaryColor,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                buildTitle('Olá, ', size: 18),
+                                const SizedBox(height: 3),
+                                FutureBuilder(
+                                  future: user.getName(),
+                                  builder: (context,
+                                      AsyncSnapshot<String> snapshot) {
+                                    if (snapshot.hasData) {
+                                      return Text(
+                                        snapshot.data!,
+                                        style: GoogleFonts.montserrat(
+                                          color: Colors.blueAccent,
+                                          fontSize: 19,
+                                        ),
+                                      );
+                                    } else {
+                                      return const Text('Loading...');
+                                    }
+                                  },
                                 ),
-                              ),
-                              onTap: () {},
-                            )
+                                IconButton(
+                                  onPressed: () async =>
+                                      await userAuth.logout(),
+                                  icon: const Icon(
+                                    Icons.logout,
+                                    color: Colors.white,
+                                  ),
+                                )
+                              ],
+                            ),
                           ],
                         ),
                       ),

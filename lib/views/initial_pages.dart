@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lojavirtual/widgets/custom_drawer.dart';
 
+import 'cart_screen.dart';
 import 'home_page.dart';
 import 'categories_page.dart';
 
@@ -16,9 +17,26 @@ class ViewPage extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       children: <Widget>[
         Scaffold(
+          backgroundColor: const Color.fromRGBO(23, 22, 31, 1),
           body: const HomePage(),
           drawer: CustomDrawer(
             pageController: _pageController,
+          ),
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            title: const Text("Popularity Skins "),
+            centerTitle: true,
+            actions: [
+              IconButton(
+                onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const CartScreen())),
+                icon: const Icon(
+                  Icons.shopping_cart,
+                ),
+              )
+            ],
           ),
         ),
         Scaffold(
