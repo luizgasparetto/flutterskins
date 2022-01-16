@@ -7,6 +7,10 @@ class CartModel extends ChangeNotifier {
   AuthService auth;
 
   List<CartProduct> products = [];
+  String? couponCode;
+  int discountPercentage = 0;
+
+  double subtotal = 0.0;
 
   CartModel({required this.auth});
 
@@ -28,6 +32,8 @@ class CartModel extends ChangeNotifier {
   }
 
   void removeCartItem(CartProduct cartProduct) {
+    products.remove(cartProduct);
+
     FirebaseFirestore.instance
         .collection('users')
         .doc(auth.usuario!.uid)
@@ -93,6 +99,16 @@ class CartModel extends ChangeNotifier {
       'quantity': quantidade - 1,
     });
 
+    notifyListeners();
+  }
+
+  void setCupom(String? couponCode, int discountPercent) {
+    this.couponCode = couponCode;
+    discountPercentage = discountPercent;
+  }
+
+  void updateSubtotal(double incrementPrice) {
+    subtotal += incrementPrice;
     notifyListeners();
   }
 }

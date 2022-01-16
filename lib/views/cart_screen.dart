@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lojavirtual/data/ProductData.dart';
 import 'package:lojavirtual/database/auth/auth_service.dart';
 import 'package:lojavirtual/models/cart_model.dart';
+import 'package:lojavirtual/widgets/discount_card.dart';
 import 'package:provider/provider.dart';
 import 'dart:developer' as dev;
 
@@ -88,6 +89,7 @@ class _CartScreenState extends State<CartScreen> {
                         if (snapshot.hasData) {
                           final item = ProductData.fromDocument(snapshot.data!);
                           final price = item.price * quantity;
+
                           return Container(
                             padding: const EdgeInsets.all(8),
                             child: Row(
@@ -198,10 +200,43 @@ class _CartScreenState extends State<CartScreen> {
                     ),
                   );
                 },
-              )
+              ),
+              const DiscountCard(),
+              const SizedBox(height: 16),
             ],
           );
         },
+      ),
+      bottomSheet: Container(
+        color: Colors.transparent,
+        padding: const EdgeInsets.all(16),
+        margin: const EdgeInsets.only(left: 6),
+        child: Ink(
+          decoration: BoxDecoration(
+            color: Colors.blueAccent,
+            borderRadius: BorderRadius.circular(10),
+            border: const Border.fromBorderSide(BorderSide.none),
+          ),
+          child: InkWell(
+            onTap: () {},
+            borderRadius: BorderRadius.circular(10),
+            child: const SizedBox(
+              height: 60,
+              width: 350,
+              child: Align(
+                alignment: Alignment.center,
+                child: Text(
+                  'BUY',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 18,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }

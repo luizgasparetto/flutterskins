@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class TextFieldWidget extends StatelessWidget {
   final String hintText;
-  final IconData prefixIconData;
+  final IconData? prefixIconData;
   final IconData? suffixIconData;
   final bool obscureText;
   final Function onChanged;
@@ -11,7 +11,7 @@ class TextFieldWidget extends StatelessWidget {
   // ignore: use_key_in_widget_constructors
   const TextFieldWidget({
     required this.hintText,
-    required this.prefixIconData,
+    this.prefixIconData,
     this.suffixIconData,
     required this.obscureText,
     required this.onChanged,
